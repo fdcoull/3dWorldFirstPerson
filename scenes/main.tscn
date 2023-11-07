@@ -1,6 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://e15jytcipy6e"]
+[gd_scene load_steps=10 format=3 uid="uid://e15jytcipy6e"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_q4vhd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_suxcb"]
+albedo_color = Color(0, 0.301961, 0.584314, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p2qei"]
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i72k3"]
+albedo_color = Color(0.603922, 0.603922, 0.603922, 1)
+metallic = 0.55
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_el336"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -17,6 +27,9 @@ glow_enabled = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wcs85"]
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yad2a"]
+height = 1.2
+
 [node name="world" type="Node3D"]
 
 [node name="stage" type="Node3D" parent="."]
@@ -25,6 +38,33 @@ glow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 use_collision = true
 size = Vector3(20, 1, 20)
+material = SubResource("StandardMaterial3D_suxcb")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0244, 2.07696, 0)
+use_collision = true
+size = Vector3(20, 1, 20)
+material = SubResource("StandardMaterial3D_p2qei")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.631618, 4.45026)
+use_collision = true
+material = SubResource("StandardMaterial3D_i72k3")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.756696, 1.28727, 6.0363)
+use_collision = true
+material = SubResource("StandardMaterial3D_i72k3")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25494, 2.22706, 7.66066)
+use_collision = true
+material = SubResource("StandardMaterial3D_i72k3")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.48518, 2.74757, 7.66066)
+use_collision = true
+material = SubResource("StandardMaterial3D_i72k3")
 
 [node name="env" type="Node3D" parent="."]
 
@@ -38,11 +78,19 @@ shadow_enabled = true
 [node name="player" type="CharacterBody3D" parent="."]
 script = ExtResource("1_q4vhd")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="player"]
+[node name="standing_collision_shape" type="CollisionShape3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_wcs85")
+
+[node name="crouching_collision_shape" type="CollisionShape3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.603376, 0)
+shape = SubResource("CapsuleShape3D_yad2a")
+disabled = true
 
 [node name="head" type="Node3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 
 [node name="Camera3D" type="Camera3D" parent="player/head"]
+
+[node name="RayCast3D" type="RayCast3D" parent="player"]
+target_position = Vector3(0, 2, 0)
