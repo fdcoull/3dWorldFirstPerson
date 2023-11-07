@@ -10,6 +10,10 @@ const WALKING_SPEED = 5.0
 const SPRINTING_SPEED = 8.0
 const CROUCHING_SPEED = 3.0
 
+var LERP_SPEED = 10.0
+
+var direction = Vector3.ZERO
+
 const MOUSE_SENSITIVITY =  0.4
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -30,8 +34,6 @@ func _physics_process(delta):
 	else:
 		CURRENT_SPEED = WALKING_SPEED
 	
-	
-	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -43,7 +45,7 @@ func _physics_process(delta):
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "forward", "backward")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	direction = lerp(direction, (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(), delta * LERP_SPEED)
 	if direction:
 		velocity.x = direction.x * CURRENT_SPEED
 		velocity.z = direction.z * CURRENT_SPEED
